@@ -1,0 +1,19 @@
+{
+	"name": "bit3/contao-console",
+	"type": "contao-module",
+	"require": {
+		"php": ">=5.3",
+		"contao/core": "*",
+		"symfony/console":"2.3.*"
+	},
+	"extra": {
+		"contao": {
+			"symlinks": {
+				"bin": "bin"
+			}
+		},
+		"branch-alias": {
+			"dev-master": "1.x-dev"
+		}
+	}
+}

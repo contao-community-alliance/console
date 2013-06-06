@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+$dir = dirname(__DIR__);
+while ($dir != '.' && !is_file($dir . '/system/initialize.php')) {
+	$dir = dirname($dir);
+}
+
+if (!is_file($dir . '/system/initialize.php')) {
+	echo 'Could not find initialize.php!';
+	exit(1);
+}
+
+define('TL_MODE', 'FE');
+require($dir . '/system/initialize.php');
+
+$application = new \Symfony\Component\Console\Application('contao');
+
+if (is_array($GLOBALS['CONSOLE_CMD'])) {
+	foreach ($GLOBALS['CONSOLE_CMD'] as $cmdClass) {
+		$application->add(new $cmdClass);
+	}
+}
+
+$application->run();
