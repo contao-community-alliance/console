@@ -11,7 +11,7 @@ if (!is_file($dir . '/system/initialize.php')) {
 	exit(1);
 }
 
-define('TL_MODE', 'FE');
+define('TL_MODE', 'BE');
 require($dir . '/system/initialize.php');
 
 $application = new \Symfony\Component\Console\Application('contao');
