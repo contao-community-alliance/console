@@ -1,9 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-$dir = dirname(__DIR__);
-while ($dir != '.' && !is_file($dir . '/system/initialize.php')) {
+$dir = dirname($argv[0]);
+
+while ($dir != '.' && $dir != '/' && !is_file($dir . '/system/initialize.php')) {
 	$dir = dirname($dir);
+
 }
 
 if (!is_file($dir . '/system/initialize.php')) {
