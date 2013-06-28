@@ -1,6 +1,23 @@
 {
 	"name": "bit3/contao-console",
+	"description":"CLI console for Contao Open Source CMS",
+	"keywords":["contao", "cli", "console"],
 	"type": "contao-module",
+	"license":"LGPL-3.0+",
+	"authors":[
+		{
+			"name":"Tristan Lins",
+			"email":"tristan.lins@bit3.de",
+			"homepage":"http://bit3.de",
+			"role":"Developer"
+		}
+	],
+	"support":{
+		"email":"info@bit3.de",
+		"issues":"https://github.com/bit3/contao-console/issues",
+		"irc":"irc://irc.freenode.org/contao.dev",
+		"source":"https://github.com/bit3/contao-console"
+	},
 	"require": {
 		"php": ">=5.3",
 		"contao/core": "*",
@@ -8,7 +25,7 @@
 	},
 	"extra": {
 		"contao": {
-			"symlinks": {
+			"sources": {
 				"bin": "bin"
 			}
 		},
