@@ -16,12 +16,34 @@ if (!is_file($dir . '/system/initialize.php')) {
 define('TL_MODE', 'BE');
 require($dir . '/system/initialize.php');
 
-$application = new \Symfony\Component\Console\Application('contao');
+class ContaoConsole extends System
+{
+	public function __construct()
+	{
+		parent::__construct();
+		$this->loadLanguageFile('default');
+	}
 
-if (is_array($GLOBALS['CONSOLE_CMD'])) {
-	foreach ($GLOBALS['CONSOLE_CMD'] as $cmdClass) {
-		$application->add(new $cmdClass);
+	public function run()
+	{
+		$application = new \Symfony\Component\Console\Application('contao');
+
+		if (array_key_exists('CONSOLE_CMD', $GLOBALS) && is_array($GLOBALS['CONSOLE_CMD'])) {
+			foreach ($GLOBALS['CONSOLE_CMD'] as $cmdClass) {
+				$application->add(new $cmdClass);
+			}
+		}
+
+		if (array_key_exists('TL_HOOK', $GLOBALS) && array_key_exists('initializeConsole', $GLOBALS['TL_HOOK']) && is_array($GLOBALS['TL_HOOK']['initializeConsole'])) {
+			foreach ($GLOBALS['TL_HOOK']['initializeConsole'] as $callback) {
+				$object = method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0];
+				$object->$callback[1]($application);
+			}
+		}
+
+		$application->run();
 	}
 }
 
-$application->run();
+$console = new ContaoConsole();
+$console->run();
