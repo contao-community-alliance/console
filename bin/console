@@ -34,8 +34,8 @@ class ContaoConsole extends System
 			}
 		}
 
-		if (array_key_exists('TL_HOOK', $GLOBALS) && array_key_exists('initializeConsole', $GLOBALS['TL_HOOK']) && is_array($GLOBALS['TL_HOOK']['initializeConsole'])) {
-			foreach ($GLOBALS['TL_HOOK']['initializeConsole'] as $callback) {
+		if (array_key_exists('TL_HOOKS', $GLOBALS) && array_key_exists('initializeConsole', $GLOBALS['TL_HOOKS']) && is_array($GLOBALS['TL_HOOKS']['initializeConsole'])) {
+			foreach ($GLOBALS['TL_HOOKS']['initializeConsole'] as $callback) {
 				$object = method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0];
 				$object->$callback[1]($application);
 			}
