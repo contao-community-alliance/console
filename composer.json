@@ -21,6 +21,7 @@
 	"require": {
 		"php": ">=5.3",
 		"contao/core": "*",
+		"contao-community-alliance/composer-installer": "*",
 		"symfony/console":"2.3.*"
 	},
 	"extra": {
