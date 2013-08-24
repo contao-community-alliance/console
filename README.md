@@ -62,7 +62,7 @@ If you need a more complex setup routine, use the `initializeConsole` hook.
 <?php
 
 $GLOBALS['TL_HOOKS']['initializeConsole'][] = array('Acme\Console', 'myInitializeConsole');
-```php
+```
 
 **Console.php**
 ```php
