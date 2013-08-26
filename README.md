@@ -11,7 +11,7 @@ $GLOBALS['CONSOLE_CMD'][] = 'Acme\Command\GreetCommand';
 ```
 
 **GreetCommand.php**
-```
+```php
 <?php
 
 namespace = Acme\Command;
