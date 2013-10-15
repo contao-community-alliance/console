@@ -20,7 +20,7 @@
 	},
 	"require": {
 		"php": ">=5.3",
-		"contao/core": "*",
+		"contao/core": ">=2.11,<3.2",
 		"contao-community-alliance/composer-installer": "*",
 		"symfony/console":"2.3.*"
 	},
