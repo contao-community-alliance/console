@@ -1,6 +1,6 @@
 {
-	"name": "bit3/contao-console",
-	"description":"CLI console for Contao Open Source CMS",
+	"name": "contao-community-alliance/console",
+	"description":"CLI console application for Contao Open Source CMS",
 	"keywords":["contao", "cli", "console"],
 	"type": "contao-module",
 	"license":"LGPL-3.0+",
@@ -14,15 +14,18 @@
 	],
 	"support":{
 		"email":"info@bit3.de",
-		"issues":"https://github.com/bit3/contao-console/issues",
-		"irc":"irc://irc.freenode.org/contao.dev",
-		"source":"https://github.com/bit3/contao-console"
+		"issues":"https://github.com/contao-community-alliance/console/issues",
+		"irc":"irc://irc.freenode.org/contao.cca",
+		"source":"https://github.com/contao-community-alliance/console"
 	},
 	"require": {
 		"php": ">=5.3",
 		"contao/core": ">=2.11,<3.3",
 		"contao-community-alliance/composer-installer": "*",
 		"symfony/console":"2.3.*"
+	},
+	"replace": {
+		"bit3/contao-console": "self-version"
 	},
 	"extra": {
 		"contao": {

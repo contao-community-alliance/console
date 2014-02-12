@@ -1,6 +1,19 @@
 #!/usr/bin/env php
 <?php
 
+/**
+ * Console application for Contao Open Source CMS
+ * Copyright (C) 2013,2014 Contao Community Alliance
+ *
+ * PHP version 5
+ *
+ * @copyright  Contao Community Alliance 2013,2014
+ * @author     Tristan Lins <tristan.lins@bit3.de>
+ * @package    contao-community-alliance/console
+ * @license    LGPL
+ * @filesource
+ */
+
 $dir = dirname($argv[0]);
 
 while ($dir != '.' && $dir != '/' && !is_file($dir . '/system/initialize.php')) {
