@@ -20,6 +20,7 @@ if (PHP_SAPI != 'cli') {
 	exit(1);
 }
 
+// search the initialize.php
 $dir = dirname($argv[0]);
 
 while ($dir != '.' && $dir != '/' && !is_file($dir . '/system/initialize.php')) {
@@ -32,27 +33,41 @@ if (!is_file($dir . '/system/initialize.php')) {
 	exit(1);
 }
 
+// initialize the contao framework
 define('TL_MODE', 'CLI');
 require($dir . '/system/initialize.php');
 
+/**
+ * Class ContaoConsole
+ *
+ * Runtime class to run the console application.
+ */
 class ContaoConsole extends System
 {
+	/**
+	 * Initialize and load the default language.
+	 */
 	public function __construct()
 	{
 		parent::__construct();
 		$this->loadLanguageFile('default');
 	}
 
+	/**
+	 * Run the console application.
+	 */
 	public function run()
 	{
 		$application = new \Symfony\Component\Console\Application('contao');
 
+		// register commands
 		if (array_key_exists('CONSOLE_CMD', $GLOBALS) && is_array($GLOBALS['CONSOLE_CMD'])) {
 			foreach ($GLOBALS['CONSOLE_CMD'] as $cmdClass) {
 				$application->add(new $cmdClass);
 			}
 		}
 
+		// call deprecated hook
 		if (array_key_exists('TL_HOOKS', $GLOBALS) && array_key_exists('initializeConsole', $GLOBALS['TL_HOOKS']) && is_array($GLOBALS['TL_HOOKS']['initializeConsole'])) {
 			foreach ($GLOBALS['TL_HOOKS']['initializeConsole'] as $callback) {
 				$object = method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0];
