@@ -22,10 +22,16 @@
 		"php": ">=5.3",
 		"contao/core": ">=2.11,<3.3",
 		"contao-community-alliance/composer-installer": "*",
+		"contao-community-alliance/event-dispatcher": "*",
 		"symfony/console":"2.3.*"
 	},
 	"replace": {
 		"bit3/contao-console": "self-version"
+	},
+	"autoload": {
+		"psr-0": {
+			"ContaoCommunityAlliance\\Console": "src/"
+		}
 	},
 	"extra": {
 		"contao": {

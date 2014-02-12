@@ -58,6 +58,8 @@ class ContaoConsole extends System
 	 */
 	public function run()
 	{
+		global $container;
+
 		$application = new \Symfony\Component\Console\Application('contao');
 
 		// register commands
@@ -95,6 +97,11 @@ class ContaoConsole extends System
 				}
 			}
 		}
+
+		$event = new \ContaoCommunityAlliance\Console\InitializeConsoleApplicationEvent($application);
+		/** @var \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher */
+		$eventDispatcher = $container['event-dispatcher'];
+		$eventDispatcher->dispatch('console.initialize', $event);
 
 		$application->run();
 	}
