@@ -1,19 +1,47 @@
 {
-	"name": "bit3/contao-console",
+	"name": "contao-community-alliance/console",
+	"description":"CLI console application for Contao Open Source CMS",
+	"keywords":["contao", "cli", "console"],
 	"type": "contao-module",
+	"license":"LGPL-3.0+",
+	"authors":[
+		{
+			"name":"Tristan Lins",
+			"email":"tristan.lins@bit3.de",
+			"homepage":"http://bit3.de",
+			"role":"Developer"
+		}
+	],
+	"support":{
+		"email":"info@bit3.de",
+		"issues":"https://github.com/contao-community-alliance/console/issues",
+		"irc":"irc://irc.freenode.org/contao.cca",
+		"source":"https://github.com/contao-community-alliance/console"
+	},
 	"require": {
 		"php": ">=5.3",
-		"contao/core": "*",
-		"symfony/console":"2.3.*"
+		"contao/core": ">=2.11,<3.3-dev",
+		"contao-community-alliance/composer-plugin": "~2.0",
+		"contao-community-alliance/event-dispatcher": "~1.0",
+		"symfony/console":"~2.3"
+	},
+	"replace": {
+		"bit3/contao-console": "self.version"
+	},
+	"autoload": {
+		"psr-0": {
+			"ContaoCommunityAlliance\\Console": "src/"
+		}
 	},
 	"extra": {
 		"contao": {
-			"symlinks": {
+			"sources": {
 				"bin": "bin"
 			}
 		},
 		"branch-alias": {
-			"dev-master": "1.x-dev"
+			"dev-master": "1.0.x-dev",
+			"dev-develop": "1.1.x-dev"
 		}
 	}
 }

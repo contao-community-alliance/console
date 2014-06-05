@@ -1,9 +1,31 @@
 #!/usr/bin/env php
 <?php
 
-$dir = dirname(__DIR__);
-while ($dir != '.' && !is_file($dir . '/system/initialize.php')) {
+/**
+ * Console application for Contao Open Source CMS
+ * Copyright (C) 2013,2014 Contao Community Alliance
+ *
+ * PHP version 5
+ *
+ * @copyright  Contao Community Alliance 2013,2014
+ * @author     Tristan Lins <tristan.lins@bit3.de>
+ * @package    contao-community-alliance/console
+ * @license    LGPL
+ * @filesource
+ */
+
+// protect from WEB access
+if (PHP_SAPI != 'cli') {
+	echo 'This script must be run in a terminal.';
+	exit(1);
+}
+
+// search the initialize.php
+$dir = dirname($argv[0]);
+
+while ($dir != '.' && $dir != '/' && !is_file($dir . '/system/initialize.php')) {
 	$dir = dirname($dir);
+
 }
 
 if (!is_file($dir . '/system/initialize.php')) {
@@ -11,15 +33,79 @@ if (!is_file($dir . '/system/initialize.php')) {
 	exit(1);
 }
 
-define('TL_MODE', 'FE');
+// initialize the contao framework
+define('TL_MODE', 'CLI');
 require($dir . '/system/initialize.php');
 
-$application = new \Symfony\Component\Console\Application('contao');
+/**
+ * Class ContaoConsole
+ *
+ * Runtime class to run the console application.
+ */
+class ContaoConsole extends System
+{
+	/**
+	 * Initialize and load the default language.
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->loadLanguageFile('default');
+	}
 
-if (is_array($GLOBALS['CONSOLE_CMD'])) {
-	foreach ($GLOBALS['CONSOLE_CMD'] as $cmdClass) {
-		$application->add(new $cmdClass);
+	/**
+	 * Run the console application.
+	 */
+	public function run()
+	{
+		global $container;
+
+		$application = new \Symfony\Component\Console\Application('contao');
+
+		// register commands
+		if (array_key_exists('CONSOLE_CMD', $GLOBALS) && is_array($GLOBALS['CONSOLE_CMD'])) {
+			foreach ($GLOBALS['CONSOLE_CMD'] as $cmdClass) {
+				$application->add(new $cmdClass);
+			}
+		}
+
+		// call deprecated hook
+		if (
+			array_key_exists('TL_HOOKS', $GLOBALS) &&
+			array_key_exists('initializeConsole', $GLOBALS['TL_HOOKS']) &&
+			is_array($GLOBALS['TL_HOOKS']['initializeConsole'])
+		) {
+			foreach ($GLOBALS['TL_HOOKS']['initializeConsole'] as $callback) {
+				if (is_array($callback)) {
+					$class  = new \ReflectionClass($callback[0]);
+					$method = $class->getMethod($callback[1]);
+					$object = null;
+
+					if (!$method->isStatic()) {
+						if ($class->hasMethod('getInstance')) {
+							$object = $class->getMethod('getInstance')->invoke(null);
+						}
+						else {
+							$object = $class->newInstance();
+						}
+					}
+
+					$method->invoke($object, $application);
+				}
+				else {
+					call_user_func($callback, $application);
+				}
+			}
+		}
+
+		$event = new \ContaoCommunityAlliance\Console\InitializeConsoleApplicationEvent($application);
+		/** @var \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher */
+		$eventDispatcher = $container['event-dispatcher'];
+		$eventDispatcher->dispatch('console.initialize', $event);
+
+		$application->run();
 	}
 }
 
-$application->run();
+$console = new ContaoConsole();
+$console->run();

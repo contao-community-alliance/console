@@ -11,7 +11,7 @@ $GLOBALS['CONSOLE_CMD'][] = 'Acme\Command\GreetCommand';
 ```
 
 **GreetCommand.php**
-```
+```php
 <?php
 
 namespace = Acme\Command;
@@ -51,6 +51,33 @@ class GreetCommand extends \Symfony\Component\Console\Command\Command
 		}
 
 		$output->writeln($text);
+	}
+}
+```
+
+If you need a more complex setup routine, use the `initializeConsole` hook.
+
+**config.php**
+```php
+<?php
+
+$GLOBALS['TL_HOOKS']['initializeConsole'][] = array('Acme\Console', 'myInitializeConsole');
+```
+
+**Console.php**
+```php
+<?php
+
+namespace Acme;
+
+use Symfony\Component\Console\Application;
+use Acme\Command\GreetCommand;
+
+class Console
+{
+	public function myInitializeConsole(Application $application)
+	{
+		$application->add(new GreetCommand());
 	}
 }
 ```
