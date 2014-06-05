@@ -23,7 +23,7 @@
 		"contao/core": ">=2.11,<3.3-dev",
 		"contao-community-alliance/composer-plugin": "~2.0",
 		"contao-community-alliance/event-dispatcher": "~1.0",
-		"symfony/console":"2.3.*"
+		"symfony/console":"~2.3"
 	},
 	"replace": {
 		"bit3/contao-console": "self.version"
